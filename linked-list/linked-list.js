@@ -1,54 +1,95 @@
-function LinkedList() {
-    this.head = null;
-    this.tail = null;
-}
-
-LinkedList.prototype.addToHead = function (value) {
-    const newNode = new Node(value, this.head, null);
-    if (this.head) {
-        this.head.prev = newNode;
-    } else {
-        this.tail = newNode;
+/*
+https://codeburst.io/js-data-structures-linked-list-3ed4d63e6571
+*/
+class LinkedList {
+    constructor(...value) {
+        this.head = null;
+        this.length = 0;
+        this.addToHead(...value);
     }
-    this.head = newNode;
-}
 
-LinkedList.prototype.addToTail = function(value) {
-    const newNode = new Node(value, null, this.tail);
-    if (this.tail) {
-        this.tail.next = newNode;
-    } else {
+    addToHead(...values) {
+        values.forEach(val => this._addSingleItemToHead(val));
+
+        return this;
+    }
+
+    _addSingleItemToHead(value) {
+        // Create the new node
+        const newNode = {value};
+        // The node is being added to the head so the head's
+        // current node should be next
+        newNode.next = this.head;
+        // The new node is now the head
         this.head = newNode;
+        this.length++;
+
+        return this;
     }
 
-    this.tail = newNode;
-}
+    removeFromHead() {
+        if (!this.length) {
+            return undefined;
+        }
 
+        const value = this.head.value;
+        // The head should point to the previous head's next node
+        this.head = this.head.next;
+        this.length--;
 
-LinkedList.prototype.removeHead = function() {
-    if (!this.head) return null;
-    let value = this.head.value;
-    this.head = this.head.next;
-    
-    if (this.head) this.head.prev = null;
-    else this.tail = null;
-    
-    return value;
-}
-
-LinkedList.prototype.search = function(searchValue) {
-    let currentNode = this.head;
-
-    while(currentNode) {
-        if (currentNode.value === searchValue) return currentNode;
-        currentNode = currentNode.next; 
+        return value;
     }
-    return null;
-}
 
+    find(val) {
+        let thisNode = this.head;
 
-function Node(value, next, prev) {
-    this.value = value;
-    this.next = next;
-    this.prev = prev;
+        while(thisNode) {
+            if (thisNode.val === val) {
+                return thisNode;
+            }
+
+            thisNode = thisNode.next;
+        }
+
+        return thisNode;
+    }
+
+    remove(val) {
+        if (!this.length) {
+            return undefined;
+        }
+
+        // If the first node is the value we are looking for, remove the head
+        if (this.head.value === val) {
+            this.removeFromHead();
+
+            return this;
+        }
+
+        // The previous node in the list of the one being iterated
+        let previousNode = this.head;
+        // The current iterated node
+        let thisNode = previousNode.next;
+
+        // Iterate through nodes
+        while(thisNode) {
+            // If we found the node, break out
+            if (thisNode.value === val) {
+                break;
+            }
+
+            previousNode = thisNode;
+            thisNode = thisNode.next;
+        }
+        // If the node is undefined
+        if (thisNode === null) {
+            return undefined;
+        }
+        
+        // Set the previous node's next to be the remove node's next
+        previousNode.next = thisNode.next;
+        this.length--;
+
+        return this;
+    }
 }

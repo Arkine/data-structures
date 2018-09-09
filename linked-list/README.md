@@ -1,4 +1,5 @@
 #Linked Lists
+see: https://codeburst.io/js-data-structures-linked-list-3ed4d63e6571
 
 ##Advantages:
 - Not restricted to a set no. of elements.
