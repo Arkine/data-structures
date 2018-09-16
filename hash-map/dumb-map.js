@@ -18,7 +18,7 @@ class DumbMap {
         });
 
         return result;
-        // return this.entries[Symbol(x)]; // With symbols
+        // return this.entries[Symbol.for(x)]; // With symbols
     }
 
     set(x, y) {
